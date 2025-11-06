@@ -21,6 +21,27 @@
         <maven-javadoc-plugin.version>3.6.3</maven-javadoc-plugin.version>
     </properties>
 
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub Packages</name>
+            <url>https://maven.pkg.github.com/Chungm7/lib-security</url>
+        </repository>
+        <snapshotRepository>
+            <id>github</id>
+            <name>GitHub Packages Snapshots</name>
+            <url>https://maven.pkg.github.com/Chungm7/lib-security</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <repositories>
+        <repository>
+            <id>github</id>
+            <name>GitHub Packages</name>
+            <url>https://maven.pkg.github.com/Chungm7/lib-security</url>
+        </repository>
+    </repositories>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -32,15 +53,6 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
-    <distributionManagement>
-        <repository>
-            <id>github</id>
-        </repository>
-        <snapshotRepository>
-            <id>github</id>
-        </snapshotRepository>
-    </distributionManagement>
 
     <dependencies>
 
