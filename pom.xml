@@ -4,12 +4,51 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.pzyko_solutions</groupId>
+    <!--
+     ¡IMPORTANTE! Este groupId DEBE coincidir con el namespace (ej. io.github.Chungm7)
+     que registraste y verificaste en el portal de Sonatype.
+     Lo he cambiado de 'com.pzyko_solutions' al formato de GitHub.
+    -->
+    <groupId>io.github.chungm7</groupId>
     <artifactId>security-optimus</artifactId>
-    <version>1.0</version>
+    <!-- La versión NO debe terminar en -SNAPSHOT -->
+    <version>1.0.0</version>
+    <packaging>jar</packaging>
 
     <name>Security Optimus Library</name>
     <description>Librería compartida de utilidades de seguridad para proyectos Optimus.</description>
+
+    <!--
+     Información OBLIGATORIA para Maven Central
+    -->
+    <!-- 1. URL del Proyecto -->
+    <url>https://github.com/Chungm7/lib-security</url>
+
+    <!-- 2. Licencia (ej. Apache 2.0) -->
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
+    <!-- 3. Información del Desarrollador -->
+    <developers>
+        <developer>
+            <name>Chung (pzyko)</name>
+            <email>chungcoelhove070@gmail.com</email>
+            <organization>io.github.chungm7</organization>
+            <organizationUrl>https://github.com/Chungm7</organizationUrl>
+        </developer>
+    </developers>
+
+    <!-- 4. SCM (Source Control Management) -->
+    <scm>
+        <connection>scm:git:git://github.com/Chungm7/lib-security.git</connection>
+        <developerConnection>scm:git:ssh://github.com:Chungm7/lib-security.git</developerConnection>
+        <url>https://github.com/Chungm7/lib-security/tree/main</url>
+    </scm>
+
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -19,28 +58,15 @@
         <jjwt.version>0.11.5</jjwt.version>
         <maven-source-plugin.version>3.3.0</maven-source-plugin.version>
         <maven-javadoc-plugin.version>3.6.3</maven-javadoc-plugin.version>
+        <!-- Versiones de los nuevos plugins -->
+        <maven-gpg-plugin.version>3.2.4</maven-gpg-plugin.version>
+        <central-publishing-plugin.version>0.5.0</central-publishing-plugin.version>
     </properties>
 
-    <distributionManagement>
-        <repository>
-            <id>github</id>
-            <name>GitHub Packages</name>
-            <url>https://maven.pkg.github.com/Chungm7/lib-security</url>
-        </repository>
-        <snapshotRepository>
-            <id>github</id>
-            <name>GitHub Packages Snapshots</name>
-            <url>https://maven.pkg.github.com/Chungm7/lib-security</url>
-        </snapshotRepository>
-    </distributionManagement>
-
-    <repositories>
-        <repository>
-            <id>github</id>
-            <name>GitHub Packages</name>
-            <url>https://maven.pkg.github.com/Chungm7/lib-security</url>
-        </repository>
-    </repositories>
+    <!--
+     Eliminamos los bloques <distributionManagement> y <repositories>
+     que apuntaban a GitHub Packages. Ya no son necesarios.
+    -->
 
     <dependencyManagement>
         <dependencies>
@@ -55,23 +81,20 @@
     </dependencyManagement>
 
     <dependencies>
-
+        <!-- Tus dependencias (sin cambios) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-autoconfigure</artifactId>
         </dependency>
-
         <dependency>
             <groupId>jakarta.servlet</groupId>
             <artifactId>jakarta.servlet-api</artifactId>
             <scope>provided</scope>
         </dependency>
-
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-api</artifactId>
@@ -89,7 +112,6 @@
             <version>${jjwt.version}</version>
             <scope>runtime</scope>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -108,6 +130,7 @@
 
     <build>
         <plugins>
+            <!-- Plugin de Sources (ya lo tenías) -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
@@ -121,6 +144,7 @@
                     </execution>
                 </executions>
             </plugin>
+            <!-- Plugin de Javadoc (ya lo tenías) -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
@@ -133,6 +157,40 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+
+            <!--
+             Plugins NUEVOS OBLIGATORIOS para Maven Central
+            -->
+
+            <!-- 1. Plugin GPG para firmar los artefactos -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>${maven-gpg-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- 2. El NUEVO Plugin de Publicación Central -->
+            <plugin>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
+                <version>${central-publishing-plugin.version}</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <!-- El ID del servidor que pondrás en tu settings.xml -->
+                    <publishingServerId>central</publishingServerId>
+                    <!-- Publica automáticamente después de subir -->
+                    <autoPublish>true</autoPublish>
+                </configuration>
             </plugin>
         </plugins>
     </build>
