@@ -4,7 +4,9 @@ import com.pzyko_solutions.jwt.JwtAuthenticationFilter;
 import com.pzyko_solutions.jwt.JwtUtil;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
+@Configuration
 public class CommonSecurityAutoConfig {
     // 1. Define JwtUtil como un Bean
     @Bean
@@ -18,9 +20,9 @@ public class CommonSecurityAutoConfig {
     // 2. Define tu filtro y le inyecta JwtUtil (¡por constructor!)
     @Bean
     @ConditionalOnMissingBean
-    public JwtAuthenticationFilter jwtAuthenticationFilter(JwtUtil jwtUtil) {
+    public JwtAuthenticationFilter jwtAuthenticationFilter() {
         // Spring ve que este Bean necesita un JwtUtil,
         // mira arriba, lo encuentra, y lo inyecta aquí.
-        return new JwtAuthenticationFilter(jwtUtil);
+        return new JwtAuthenticationFilter();
     }
 }

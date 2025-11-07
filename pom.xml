@@ -12,7 +12,7 @@
     <groupId>io.github.chungm7</groupId>
     <artifactId>security-optimus</artifactId>
     <!-- La versión NO debe terminar en -SNAPSHOT -->
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <packaging>jar</packaging>
 
     <name>Security Optimus Library</name>

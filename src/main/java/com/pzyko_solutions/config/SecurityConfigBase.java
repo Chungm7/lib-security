@@ -37,7 +37,7 @@ public abstract class SecurityConfigBase {
 
     @Bean
     public JwtAuthenticationFilter jwtTokenFilter() {
-        return new JwtAuthenticationFilter(jwtUtil());
+        return new JwtAuthenticationFilter();
     }
 
     @Bean
